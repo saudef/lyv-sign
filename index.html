@@ -56,6 +56,7 @@ h1{font-size:1.35rem;margin:0;text-wrap:balance;font-weight:700}
 .f:focus{outline:none;border-bottom-color:var(--accent);background:var(--accent-soft)}
 .f.fixed{color:var(--ink);border-bottom-color:transparent;font-weight:600;padding:0;min-width:0;height:auto;line-height:inherit}
 .date{white-space:nowrap}
+.hijri{font-weight:600;font-variant-numeric:tabular-nums}
 .sig-table{width:100%;border-collapse:collapse;margin-top:14px;table-layout:fixed}
 .sig-table th{font-family:var(--f-ui);font-size:.95rem;border-bottom:1.5px solid var(--rule);padding:6px 4px;text-align:start}
 .sig-table td{vertical-align:top;padding:10px 4px 6px;width:50%;min-width:0;word-break:break-word}
@@ -79,6 +80,11 @@ button{font-size:.98rem;font-weight:700;border-radius:10px;padding:12px 18px;bor
 button.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);flex:1 1 auto}
 button:disabled{opacity:.5;cursor:not-allowed}
 button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field .k{font-size:.85rem;color:var(--muted)}
+.box{font:inherit;font-family:var(--f-body);font-size:1.1rem;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);min-height:48px;width:100%}
+.box:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.today{font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums}
 label.check{display:flex;gap:10px;align-items:flex-start;font-size:.95rem;line-height:1.5;color:var(--fg)}
 label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:var(--accent)}
 .status{font-size:.92rem;border-radius:10px;padding:10px 12px;display:none;line-height:1.5}
@@ -124,7 +130,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
   <article class="sheet" id="contract" lang="ar">
     <h2>عقد تنازل عن علامة تجارية</h2>
 
-    <p>حُرر هذا العقد في مدينة <input class="f m" id="city" placeholder="المدينة" aria-label="المدينة"> بتاريخ <span class="date"><input class="f s" id="cd" inputmode="numeric" placeholder="يوم" aria-label="يوم" maxlength="2"> / <input class="f s" id="cm" inputmode="numeric" placeholder="شهر" aria-label="شهر" maxlength="2"> / <input class="f s" id="cy" inputmode="numeric" placeholder="سنة" aria-label="سنة" maxlength="4"> م</span>، بين كل من:</p>
+    <p>حُرر هذا العقد في مدينة <input class="f m" id="city" placeholder="المدينة" aria-label="المدينة"> بتاريخ <span class="date"><input class="f s" id="cd" inputmode="numeric" placeholder="يوم" aria-label="يوم" maxlength="2"> / <input class="f s" id="cm" inputmode="numeric" placeholder="شهر" aria-label="شهر" maxlength="2"> / <input class="f s" id="cy" inputmode="numeric" placeholder="سنة" aria-label="سنة" maxlength="4"> م</span> الموافق <span class="date hijri" data-hijri="cd,cm,cy">____ / ____ / ______ هـ</span>، بين كل من:</p>
 
     <p class="party">الطرف الأول (المتنازل):</p>
     <ul>
@@ -182,6 +188,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
           <div><span class="k">الاسم:</span> <span class="f name" id="p1name-echo" data-echo="p1name"></span></div>
           <div><span class="k">التوقيع:</span><div class="sigbox" id="sig1"><span class="empty">يظهر التوقيع هنا بعد التوقيع في المربع أدناه</span></div></div>
           <div><span class="k">التاريخ:</span> <span class="date"><input class="f s" id="sd" inputmode="numeric" maxlength="2" aria-label="يوم التوقيع"> / <input class="f s" id="sm" inputmode="numeric" maxlength="2" aria-label="شهر التوقيع"> / <input class="f s" id="sy" inputmode="numeric" maxlength="4" aria-label="سنة التوقيع"> م</span></div>
+          <div><span class="k">الموافق:</span> <span class="date hijri" data-hijri="sd,sm,sy">____ / ____ / ______ هـ</span></div>
         </div></td>
         <td><div class="row">
           <div><span class="k">الاسم:</span> <span class="f fixed">سعود عماد فهد الدغيثر</span></div>
@@ -194,7 +201,10 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
 
   <section class="card" id="padcard">
     <h3>توقيع الطرف الأول</h3>
-    <p class="note">وقّع بإصبعك داخل المربع. يُنقل توقيعك تلقائياً إلى خانة التوقيع في العقد.</p>
+    <label class="field" for="signer"><span class="k">الاسم الكامل كما في الهوية</span>
+      <input type="text" id="signer" class="box" placeholder="اكتب اسمك هنا" autocomplete="name"></label>
+    <p class="note">التاريخ اليوم: <span class="today" id="today"></span></p>
+    <p class="note">وقّع بإصبعك داخل المربع. يُنقل اسمك وتوقيعك والتاريخ تلقائياً إلى خانة التوقيع في العقد.</p>
     <div class="pad-wrap">
       <canvas id="pad" aria-label="مربع التوقيع"></canvas>
       <div class="pad-line"></div>
@@ -250,6 +260,31 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
     if(!$(d).value && !$(m).value && !$(y).value){ $(d).value = pad2(t.getDate()); $(m).value = pad2(t.getMonth()+1); $(y).value = t.getFullYear(); }
   }
 
+  /* ---- Hijri (Umm al-Qura) from a Gregorian date ---- */
+  function hijri(date){
+    var cals = ['islamic-umalqura','islamic'];
+    for(var i=0;i<cals.length;i++){
+      try{
+        var parts = new Intl.DateTimeFormat('en-u-ca-'+cals[i]+'-nu-latn', {day:'numeric',month:'numeric',year:'numeric'}).formatToParts(date), o = {};
+        parts.forEach(function(x){ o[x.type] = x.value; });
+        if(o.day && o.month && o.year) return pad2(+o.day) + ' / ' + pad2(+o.month) + ' / ' + String(o.year).replace(/\D.*$/,'') + ' هـ';
+      }catch(e){}
+    }
+    return '';
+  }
+  function updateHijri(){
+    $$('[data-hijri]').forEach(function(el){
+      var ids = el.getAttribute('data-hijri').split(','), d = +$('#'+ids[0]).value, m = +$('#'+ids[1]).value, y = +$('#'+ids[2]).value;
+      var out = '';
+      if(d && m && y > 1900){ var dt = new Date(y, m-1, d); if(dt.getDate() === d) out = hijri(dt); }
+      el.textContent = out || '____ / ____ / ______ هـ';
+    });
+  }
+  function todayLine(){
+    var t = new Date(), g = pad2(t.getDate()) + ' / ' + pad2(t.getMonth()+1) + ' / ' + t.getFullYear() + ' م', h = hijri(t);
+    $('#today').textContent = g + (h ? '  —  ' + h : '');
+  }
+
   /* ---- echo name into the signature block ---- */
   function echo(){
     $$('[data-echo]', contract).forEach(function(el){ el.textContent = $('#'+el.getAttribute('data-echo')).value; });
@@ -298,7 +333,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
       x.stroke();
     });
     sigData = c.toDataURL('image/png');
-    fillToday('#sd','#sm','#sy');
+    fillToday('#sd','#sm','#sy'); updateHijri();
     place(); save(); validate();
   }
   function place(){
@@ -320,7 +355,8 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
     el.classList.toggle('show', miss.length > 0);
     $('#download').disabled = miss.length > 0 || busy;
   }
-  inputs.forEach(function(i){ i.addEventListener('input', function(){ echo(); save(); validate(); }); });
+  inputs.forEach(function(i){ i.addEventListener('input', function(){ if(i.id === 'p1name') $('#signer').value = i.value; echo(); updateHijri(); save(); validate(); }); });
+  $('#signer').addEventListener('input', function(){ $('#p1name').value = this.value; echo(); save(); validate(); });
   $('#agree').addEventListener('change', function(){ save(); validate(); });
 
   /* ---- PDF ---- */
@@ -438,7 +474,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
   });
 
   /* ---- boot ---- */
-  load(); fillToday('#cd','#cm','#cy'); echo(); place(); validate();
+  load(); fillToday('#cd','#cm','#cy'); fillToday('#sd','#sm','#sy'); $('#signer').value = $('#p1name').value; updateHijri(); todayLine(); echo(); place(); validate();
   size(); if(document.fonts && document.fonts.ready){ document.fonts.ready.then(size); }
 })();
 </script>
