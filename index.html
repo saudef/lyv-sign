@@ -167,7 +167,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
     <h3>البند الرابع: التزامات الطرفين</h3>
     <ol>
       <li>يسلّم الطرف الأول للطرف الثاني شهادة التسجيل وما لديه من مستندات خاصة بالعلامة.</li>
-      <li>يوقّع الطرفان على الطلبات اللازمة لقيد التنازل لدى الهيئة السعودية للملكية الفكرية، ويتحمل <input class="f m" id="fees" placeholder="الطرف الأول / الثاني" aria-label="من يتحمل الرسوم"> الرسوم.</li>
+      <li>يوقّع الطرفان على الطلبات اللازمة لقيد التنازل لدى الهيئة السعودية للملكية الفكرية، ويتحمل <input class="f m" id="fees" value="الطرف الثاني" placeholder="الطرف الأول / الثاني" aria-label="من يتحمل الرسوم"> الرسوم.</li>
       <li>يتوقف الطرف الأول عن استخدام العلامة أو أي علامة مشابهة لها من تاريخ توقيع هذا العقد.</li>
       <li>تنتقل ملكية العلامة إلى الطرف الثاني بين الطرفين من تاريخ هذا العقد، وفي مواجهة الغير من تاريخ قيد التنازل لدى الهيئة.</li>
     </ol>
@@ -483,7 +483,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
   });
 
   /* ---- boot ---- */
-  load(); fillToday('#cd','#cm','#cy'); fillToday('#sd','#sm','#sy'); fillToday('#s2d','#s2m','#s2y');
+  load(); if(!$('#fees').value.trim()) $('#fees').value = 'الطرف الثاني'; fillToday('#cd','#cm','#cy'); fillToday('#sd','#sm','#sy'); fillToday('#s2d','#s2m','#s2y');
   if(!$('#pd').value && !$('#pm').value && !$('#py').value){ $('#pd').value = $('#cd').value; $('#pm').value = $('#cm').value; $('#py').value = $('#cy').value; } $('#signer').value = $('#p1name').value; updateHijri(); todayLine(); echo(); place(); validate();
   size(); if(document.fonts && document.fonts.ready){ document.fonts.ready.then(size); }
 })();
