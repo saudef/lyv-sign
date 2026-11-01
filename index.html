@@ -145,7 +145,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
     <ul>
       <li>الاسم: <span class="f fixed">سعود عماد فهد الدغيثر</span></li>
       <li>رقم الهوية الوطنية / الإقامة: <span class="f fixed">1107301853</span></li>
-      <li>العنوان: <input class="f xl" id="p2addr" placeholder="عنوان الطرف الثاني" aria-label="عنوان الطرف الثاني"></li>
+      <li>العنوان: <input class="f xl" id="p2addr" value="RYSA8556" placeholder="عنوان الطرف الثاني" aria-label="عنوان الطرف الثاني"></li>
       <li>الجوال: <span class="f fixed phone">+966 58 296 6603</span></li>
     </ul>
 
@@ -483,7 +483,7 @@ label.check input{width:20px;height:20px;margin-top:3px;flex:none;accent-color:v
   });
 
   /* ---- boot ---- */
-  load(); if(!$('#fees').value.trim()) $('#fees').value = 'الطرف الثاني'; fillToday('#cd','#cm','#cy'); fillToday('#sd','#sm','#sy'); fillToday('#s2d','#s2m','#s2y');
+  load(); if(!$('#fees').value.trim()) $('#fees').value = 'الطرف الثاني'; if(!$('#p2addr').value.trim()) $('#p2addr').value = 'RYSA8556'; fillToday('#cd','#cm','#cy'); fillToday('#sd','#sm','#sy'); fillToday('#s2d','#s2m','#s2y');
   if(!$('#pd').value && !$('#pm').value && !$('#py').value){ $('#pd').value = $('#cd').value; $('#pm').value = $('#cm').value; $('#py').value = $('#cy').value; } $('#signer').value = $('#p1name').value; updateHijri(); todayLine(); echo(); place(); validate();
   size(); if(document.fonts && document.fonts.ready){ document.fonts.ready.then(size); }
 })();
